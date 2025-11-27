@@ -14,7 +14,7 @@ from temporal.braid import TemporalBraid
 from quantum.superposition import QuantumSuperposition
 from quantum.entanglement import QuantumEntanglement
 from holographic.holographic_memory import HolographicMemory
-from visualisation.resonance_paths import ResonancePathVisualizer
+from visualisation.resonance_paths import plot_emergence_path, plot_resonance_network
 from visualisation.field_visualizer import FieldVisualizer
 from crystallisation.crystallizer import SemanticCrystallizer
 from insights.extractor import InsightExtractor
@@ -39,8 +39,7 @@ class EnhancedTSW:
         self.decay_engine = TemporalDecay()
         self.consolidation = MemoryConsolidation()
         
-        # Visualization
-        self.path_visualizer = ResonancePathVisualizer()
+        # Visualization (functions, not classes)
         self.field_visualizer = FieldVisualizer()
         
         # Insight extraction
@@ -123,7 +122,7 @@ class EnhancedTSW:
         
         # Visualize resonance path if insights found
         if resonances and len(resonances) > 2:
-            self.path_visualizer.plot_emergence_path(question, resonances[:5])
+            plot_emergence_path(question, resonances[:5], show=False)
         
         return insight
     
@@ -139,10 +138,12 @@ class EnhancedTSW:
             for wave2 in self.field.waves[i+1:]:
                 strength = wave1.interfere_with(wave2)
                 if strength > 0.3:
-                    resonance_pairs.append((wave1, wave2, strength))
+                    # Convert wave objects to string IDs for graph
+                    wave1_id = f"Wave_{id(wave1) % 10000}"
+                    wave2_id = f"Wave_{id(wave2) % 10000}"
+                    resonance_pairs.append((wave1_id, wave2_id, strength))
         
-        self.path_visualizer.build_resonance_graph(self.field.waves, resonance_pairs)
-        self.path_visualizer.plot_resonance_network()
+        plot_resonance_network(resonance_pairs, show=False)
     
     def demonstrate_holographic_recovery(self):
         """Demonstrate holographic memory recovery from damage"""

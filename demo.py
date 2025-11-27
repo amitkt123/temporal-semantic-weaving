@@ -2,6 +2,7 @@
 Enhanced TSW Demo
 """
 
+import numpy as np
 from main import EnhancedTSW
 import time
 
